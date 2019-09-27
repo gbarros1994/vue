@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div id="app">
+      <menu-bar></menu-bar>
+      <button id="show-modal" @click="showModal = true">Show Modal</button>
+      <modal v-if="showModal" @close="showModal = false">
+      </modal>
+      <h1 v-bind:title="titulo" class="text-center">{{titulo}}</h1>
+      <button @click="getUsers" class="btn btn-success d-block m-auto">Carregar contatos</button>
+      <div class="p-3">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody ref="users">
+              <tr v-for="(user, index) in users">
+                <th scope="row">{{user.name}}</th>
+                <th>{{user.email}}</th>
+                <th><a href="#" @click="remove(index)" class="btn btn-sm btn-danger">remover</a></th>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <template id="menu">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(Página atual)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Destaques</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Preços</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Desativado</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+  </template>
+
+  <template id="modal-template">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLiveLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Woohoo, you're reading this text in a modal!</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+  </template>
+
+  <script>
+    Vue.component('modal', {
+      template: '#modal-template'
+    })
+    Vue.component('menu-bar', {
+      template: '#menu'
+    })
+
+    var mixin = {
+      methods: {
+        getUsers(){
+            var url = 'https://jsonplaceholder.typicode.com/users';
+            var vm = this;
+            axios.get(url).then(function(a){
+            vm.users = a.data;
+          })
+        },
+        remove(a) {
+          var vm = this;
+          vm.users.splice(a, 1);
+        }
+      }
+    }
+
+    var app = new Vue({
+      el: '#app',
+      mixins: [mixin],
+
+      mounted() {
+        console.log(this.$refs)
+      },
+      data: {
+        titulo: 'Aula 20 | Carregar contatos',
+        users: null,
+        showModal: false,
+      }
+    })
+  </script>
+
+</body>
+<style>
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 300px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
+
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-default-button {
+  float: right;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+</style>
+</html>

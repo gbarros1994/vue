@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    {{titulo | uperCase()}}
+
+    <button @click.stop.prevent="getUsers()">Submit</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var mixin = {
+      methods: {
+        getUsers(){
+          console.log('esta funcionando');
+        }
+      }
+    }
+    var app = new Vue({
+      el: '#app',
+
+      mixins: [mixin],
+
+      data: {
+        titulo: 'Aula 17'
+      },
+
+      filters: {
+        uperCase(str) {
+          return str.toUpperCase();
+        }
+      },
+
+      methods: {
+        
+      }
+    })
+  </script>
+</body>
+</html>

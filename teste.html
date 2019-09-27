@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    {{titulo | uperCase()}}
+
+    <div v-if="response.status == 'error'">{{response.msg}}</div>
+    <div v-for="user in users">
+      {{user.name}}
+    </div>
+    <div v-if="loader.users">carregando</div>
+    <button @click.stop.prevent="getUsers()">Submit</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    var mixin = {
+      methods: {
+        getUsers(){
+          this.loader.users = true;
+          var url = 'https://jsonplaceholder.typicode.com/users';
+          var vm = this;
+          axios.get(url).then(function(paraDaApi) {
+            vm.users = paraDaApi.data;
+            vm.loader.users = false;
+            console.log(paraDaApi);
+          })
+        }
+      }
+    }
+    var app = new Vue({
+      el: '#app',
+
+      mixins: [mixin],
+
+      data: {
+        titulo: 'Aula 19',
+        users: null,
+        loader: {
+          users: false,
+        },
+        response: {
+          msg: "Erro ao conectar",
+          status: ""
+        }
+      },
+
+      filters: {
+        uperCase(str) {
+          return str.toUpperCase();
+        }
+      },
+
+    })
+  </script>
+</body>
+</html>

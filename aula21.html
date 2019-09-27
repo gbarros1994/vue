@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    {{title}}
+    <div v-for="user in users">
+      {{user.nome}}
+    </div>
+    <select v-model="movie" name="" id="">
+      <option value="transformers">Transformers</option>
+      <option value="transformers">Transformers</option>
+    </select>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        title: 'aula 21',
+        users: [
+          {nome: 'gerson'},
+          {nome: 'carlos'}
+        ],
+        movie: 'transformers',
+      }
+    })
+  </script>
+</body>
+</html>

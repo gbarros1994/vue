@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    {{titulo}}
+
+    <ul>
+      <li v-for="valor in valores">{{valor.name}}</li>
+    </ul>
+    <div  v-if="loader.users" class="lds-dual-ring"></div>
+    <button @click="getUsers()">Get</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+  <script>
+    var mixin = {
+      methods: {
+          getUsers() {
+            this.loader.users = true;
+          this.$http.get('https://jsonplaceholder.typicode.com/comments').then(function(e){
+            this.valores = e.body;
+          }, function(){
+            console.log('deu erro');
+          })
+          .finally(function(){
+            this.loader.users = false;
+          })
+        }
+      }
+    }
+    var app = new Vue({
+      el: '#app',
+
+      mixins: [mixin],
+      data: {
+        valores: null,
+        titulo: 'Vue js Gerson',
+        loader: {
+          users: false,
+        }
+      }
+    })
+  </script>
+
+  <style type="text/css">
+.lds-dual-ring {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+}
+
+                $teste = $this->plan->getPlans();
+                var_dump($teste->return->result()[$idPlan-1]); die;
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid red;
+  border-color: red transparent red transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+  </style>
+</body>
+</html>
